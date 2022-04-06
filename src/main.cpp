@@ -11,7 +11,7 @@
 
 using namespace std;
 using namespace restbed;
-using json = nlohmann::json;
+// using json = nlohmann::json;
 
 struct Auth
 {
@@ -386,7 +386,7 @@ void pi_gpio_set_without_json(const shared_ptr< Session > session)
         }
     }
     
-    string stateString = request->get_query_parameter("state")
+    string stateString = request->get_query_parameter("state");
     GPIOState toSet = TOGGLE;
     if (stateString == "ON")
     {
