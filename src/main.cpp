@@ -224,7 +224,7 @@ protected:
     std::vector< GPIOManager* > m_gpioManagers;
 };
 
-PinController g_pinController;
+PinController* g_pinController;
 
 
 void pi_gpio_get(const shared_ptr< Session > session)
@@ -249,13 +249,13 @@ void pi_gpio_get(const shared_ptr< Session > session)
 
     stringstream ret;
     uint8_t pin = std::stoi(request->get_query_parameter("pin"));
-    switch (g_pinController.GetGPIODirection(pin))
+    switch (g_pinController->GetGPIODirection(pin))
     {
     case IN:
-        ret << g_pinController.ReadGPIOInput(pin);
+        ret << g_pinController->ReadGPIOInput(pin);
         break;
     case OUT:
-        switch (g_pinController.GetGPIOState(pin))
+        switch (g_pinController->GetGPIOState(pin))
         {
         case ON:
             ret << "ON";
@@ -337,7 +337,7 @@ void pi_gpio_set(const shared_ptr< Session > session)
         string pinString = requestData["pin"];
         uint8_t pin = std::stoi(pinString);
 
-        g_pinController.SetGPIOState(pin, toSet);
+        g_pinController->SetGPIOState(pin, toSet);
         
         l_session->close(OK, "complete.");
         l_session->erase();
@@ -351,6 +351,8 @@ int main(const int, const char**)
     {
         return 1;
     }
+
+    g_pinController = new PinController();
 
     auto gpio_get = make_shared< Resource >();
     gpio_get->set_path("/v1/gpio/get");
@@ -368,6 +370,8 @@ int main(const int, const char**)
     service.publish(gpio_get);
     service.publish(gpio_set);
     service.start(settings);
+
+    delete g_pinController;
 
     return EXIT_SUCCESS;
 }
