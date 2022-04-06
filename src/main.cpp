@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <restbed>
 #include <cpr/cpr.h>
-#include <nlohmann/json.hpp>
+// #include <nlohmann/json.hpp> //crashes...
 #include "base64.h"
 #include <wiringPi.h>
 #include <string>
@@ -277,7 +277,21 @@ void pi_gpio_get(const shared_ptr< Session > session)
     session->close(OK, ret.str());
 }
 
-void pi_gpio_set(const shared_ptr< Session > session)
+#if 0
+/**
+ * THIS FUNCTION CRASHES: 
+#0  __GI_raise (sig=sig@entry=6) at ../sysdeps/unix/sysv/linux/raise.c:50
+#1  0x768c4804 in __GI_abort () at abort.c:79
+#2  0x76916af4 in __libc_message (action=action@entry=do_abort, fmt=<optimized out>) at ../sysdeps/posix/libc_fatal.c:155
+#3  0x7691e6ac in malloc_printerr (str=<optimized out>) at malloc.c:5347
+#4  0x7691fcec in _int_free (av=<optimized out>, p=0xb1918, have_lock=0) at malloc.c:4173
+#5  0x0007800c in __gnu_cxx::new_allocator<std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, nlohmann::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long long, unsigned long long, double, std::allocator, nlohmann::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> > >, std::less<void>, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, nlohmann::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long long, unsigned long long, double, std::allocator, nlohmann::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> > > > > > >::deallocate(std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, nlohmann::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long long, unsigned long long, double, std::allocator, nlohmann::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> > >, std::less<void>, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, nlohmann::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long long, unsigned long long, double, std::allocator, nlohmann::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> > > > > >*, unsigned int) ()
+#6  0x00070d38 in std::allocator_traits<std::allocator<std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, nlohmann::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long long, unsigned long long, double, std::allocator, nlohmann::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> > >, std::less<void>, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, nlohmann::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long long, unsigned long long, double, std::allocator, nlohmann::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> > > > > > > >::deallocate(std::allocator<std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, nlohmann::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long long, unsigned long long, double, std::allocator, nlohmann::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> > >, std::less<void>, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, nlohmann::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long long, unsigned long long, double, std::allocator, nlohmann::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> > > > > > >&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, nlohmann::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long long, unsigned long long, double, std::allocator, nlohmann::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> > >, std::less<void>, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, nlohmann::basic_json<std::map, std::vecto--Type <RET> for more, q to quit, c to continue without paging--
+r, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long long, unsigned long long, double, std::allocator, nlohmann::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> > > > > >*, unsigned int) ()
+#7  0x0006d86c in nlohmann::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long long, unsigned long long, double, std::allocator, nlohmann::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> > >::json_value::destroy(nlohmann::detail::value_t) ()
+#8  0x0006ba28 in nlohmann::basic_json<std::map, std::vector, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool, long long, unsigned long long, double, std::allocator, nlohmann::adl_serializer, std::vector<unsigned char, std::allocator<unsigned char> > >::~basic_json() ()
+ */ 
+void pi_gpio_set_with_json(const shared_ptr< Session > session)
 {
     const auto request = session->get_request();
     int contentLength = request->get_header("Content-Length", 0);
@@ -341,6 +355,55 @@ void pi_gpio_set(const shared_ptr< Session > session)
         l_session->close(OK, "complete.");
     });
 }
+#endif
+
+void pi_gpio_set_without_json(const shared_ptr< Session > session)
+{
+  auto request = session->get_request();
+
+#if 1
+    string parameters;
+    for (const auto& param : request->get_query_parameters())
+    {
+        parameters += "{"+param.first+" : "+param.second+"} ";
+    }
+    fprintf(stdout, "Processing gpio request for: {\n    %s\n}\n", parameters.c_str());
+#endif
+
+    const vector<RequiredParameter> requiredParameters = {
+        {"pin", "pin", {}, ""}, //the wiringPi pin to use.
+        {"state", "state", {}, ""}, //the state to set; "ON", "OFF". '"TOGGLE'.
+    };
+    for (const auto& req : requiredParameters)
+    {
+        if (!request->has_query_parameter(req.name))
+        {
+            if(req.defaultVal.empty())
+            {
+                l_session->close(400, "Please specify \"" + req.name + "\"");
+                return;
+            }
+        }
+    }
+    
+    string stateString = request->get_query_parameter("state")
+    GPIOState toSet = TOGGLE;
+    if (stateString == "ON")
+    {
+        toSet = ON;
+    }
+    else if (stateString == "OFF")
+    {
+        toSet = OFF;
+    }
+
+    string pinString = request->get_query_parameter("pin");
+    uint8_t pin = std::stoi(pinString);
+
+    g_pinController->SetGPIOState(pin, toSet);
+        
+    l_session->close(OK, "complete.");
+}
 
 int main(const int, const char**)
 {
@@ -358,7 +421,7 @@ int main(const int, const char**)
 
     auto gpio_set = make_shared< Resource >();
     gpio_set->set_path("/v1/gpio/set");
-    gpio_set->set_method_handler("POST", pi_gpio_set);
+    gpio_set->set_method_handler("GET", pi_gpio_set_without_json);
 
     auto settings = make_shared< Settings >();
     settings->set_port(80);
