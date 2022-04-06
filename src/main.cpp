@@ -243,7 +243,6 @@ void pi_gpio_get(const shared_ptr< Session > session)
     if (!request->has_query_parameter("pin"))
     {
         session->close(400, "You must specify a pin.");
-        session->erase();
         return;
     }
 
@@ -274,7 +273,6 @@ void pi_gpio_get(const shared_ptr< Session > session)
     }
 
     session->close(OK, ret.str());
-    session->erase();
 }
 
 void pi_gpio_set(const shared_ptr< Session > session)
@@ -301,7 +299,7 @@ void pi_gpio_set(const shared_ptr< Session > session)
         {
             fprintf(stdout, "Could not parse:\n%.*s\n", (int) l_body.size(), l_body.data());
             l_session->close(400, "Could not parse request. Please submit request as valid json.");
-            l_session->erase();
+            delete[] requestJson;
             return;
         }
         delete[] requestJson;
@@ -318,7 +316,6 @@ void pi_gpio_set(const shared_ptr< Session > session)
                 if(req.defaultVal.empty())
                 {
                     l_session->close(400, "Please specify \"" + req.name + "\"");
-                    l_session->erase();
                     return;
                 }
             }
@@ -340,7 +337,6 @@ void pi_gpio_set(const shared_ptr< Session > session)
         g_pinController->SetGPIOState(pin, toSet);
         
         l_session->close(OK, "complete.");
-        l_session->erase();
     });
 }
 
