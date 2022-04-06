@@ -1,5 +1,6 @@
 #include <memory>
 #include <cstdlib>
+#include <unistd.h>
 #include <restbed>
 #include <cpr/cpr.h>
 #include <nlohmann/json.hpp>
@@ -195,6 +196,7 @@ public:
             }
         }
         GPIOManager* newManager = new GPIOManager(pin, defaultDirection);
+        sleep(1); //add delay so hardware can be initialized.
         m_gpioManagers.push_back(newManager);
         return newManager;
     }
