@@ -380,7 +380,7 @@ void pi_gpio_set_without_json(const shared_ptr< Session > session)
         {
             if(req.defaultVal.empty())
             {
-                l_session->close(400, "Please specify \"" + req.name + "\"");
+                session->close(400, "Please specify \"" + req.name + "\"");
                 return;
             }
         }
@@ -402,7 +402,7 @@ void pi_gpio_set_without_json(const shared_ptr< Session > session)
 
     g_pinController->SetGPIOState(pin, toSet);
         
-    l_session->close(OK, "complete.");
+    session->close(OK, "complete.");
 }
 
 int main(const int, const char**)
