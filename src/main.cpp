@@ -334,7 +334,8 @@ void pi_gpio_set(const shared_ptr< Session > session)
             toSet = OFF;
         }
 
-        uint8_t pin = std::stoi(requestData["pin"]);
+        string pinString = requestData["pin"];
+        uint8_t pin = std::stoi(pinString);
 
         g_pinController.SetGPIOState(pin, toSet);
         
