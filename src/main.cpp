@@ -346,6 +346,12 @@ void pi_gpio_set(const shared_ptr< Session > session)
 
 int main(const int, const char**)
 {
+
+    if (wiringPiSetup() == -1)
+    {
+        return 1;
+    }
+
     auto gpio_get = make_shared< Resource >();
     gpio_get->set_path("/v1/gpio/get");
     gpio_get->set_method_handler("GET", pi_gpio_get);
