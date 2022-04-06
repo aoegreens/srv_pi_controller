@@ -248,7 +248,7 @@ void pi_gpio_get(const shared_ptr< Session > session)
     }
 
     stringstream ret;
-    uint8_t pin = std::stoi(request->get_query_parameter("pin"));
+    uint8_t pin = stoi(request->get_query_parameter("pin"));
     switch (g_pinController.GetGPIODirection(pin))
     {
     case IN:
@@ -334,7 +334,9 @@ void pi_gpio_set(const shared_ptr< Session > session)
             toSet = OFF;
         }
 
-        g_pinController.SetGPIOState(requestData["pin"], toSet);
+        uint8_t pin = stoi(requestData["pin"]);
+
+        g_pinController.SetGPIOState(pin, toSet);
         
         l_session->close(OK, "complete.");
         l_session->erase();
