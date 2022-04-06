@@ -47,15 +47,14 @@ Auth GetAuth(const shared_ptr< Session > session)
 }
 
 typedef enum {
-    UNKOWN = 0,
+    STATE_UNKOWN = 0,
     ON,
     OFF,
-    TOGGLE,
-    INPUT
+    TOGGLE
 } GPIOState;
 
 typedef enum {
-    UNKOWN = 0,
+    DIRECTION_UNKOWN = 0,
     IN,
     OUT
 } GPIODirection;
@@ -66,7 +65,7 @@ public:
     GPIOManager(uint8_t pin, GPIODirection direction=OUT) :
         m_pin(pin),
         m_initialized(false),
-        m_state(UNKOWN),
+        m_state(STATE_UNKOWN),
         m_direction(direction)
     {
         Initialize();
@@ -99,7 +98,6 @@ public:
         case IN:
             pinMode(m_pin, INPUT);
             m_initialized = true;
-            m_state = INPUT;
             break;
         case OUT:
             pinMode(m_pin, OUTPUT);
@@ -158,7 +156,7 @@ public:
             }
             break;
         default:
-            return UNKOWN;
+            return STATE_UNKOWN;
         }
         return m_state;
     }
@@ -250,7 +248,7 @@ void pi_gpio_get(const shared_ptr< Session > session)
     }
 
     stringstream ret;
-    uint8_t pin = request->get_query_parameter("pin");
+    uint8_t pin = std::stoi(request->get_query_parameter("pin"));
     switch (g_pinController.GetGPIODirection(pin))
     {
     case IN:
