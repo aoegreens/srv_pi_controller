@@ -334,7 +334,7 @@ void pi_gpio_set(const shared_ptr< Session > session)
             toSet = OFF;
         }
 
-        g_pinController.SetGPIOState(requestData["pin"], toSet)
+        g_pinController.SetGPIOState(requestData["pin"], toSet);
         
         l_session->close(OK, "complete.");
         l_session->erase();
