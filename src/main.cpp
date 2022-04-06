@@ -304,7 +304,7 @@ void pi_gpio_set(const shared_ptr< Session > session)
             l_session->erase();
             return;
         }
-        delete[] requestJson;
+        // delete[] requestJson; //free(): invalid pointer???
         const vector<RequiredParameter> requiredParameters = {
                 {"pin", "pin", {}, ""}, //the wiringPi pin to use.
                 {"state", "state", {}, ""}, //the state to set; "ON", "OFF". '"TOGGLE'.
