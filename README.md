@@ -1,4 +1,4 @@
-# Rack Panel WordPress Plugin
+# Hardware Control Server for Raspberry Pi
 
 This plugin is used to control AOE Greens hardware.
 
