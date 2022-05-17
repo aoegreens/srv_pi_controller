@@ -12,7 +12,7 @@
 				"cpp_version" : 20,
 				"dep_lib" : [
 					"bio",
-					"aoehw",
+					"hw",
 					"cpr",
 					"restbed"
 				]
